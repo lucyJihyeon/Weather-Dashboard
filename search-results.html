@@ -18,12 +18,30 @@
       href="https://fonts.googleapis.com/css2?family=Sometype+Mono&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./assets/style.css" />
+    <!--font awesome-->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+    <!--Dayjs library-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
+      integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U="
+      crossorigin="anonymous"
+    ></script>
+
+    <link rel="stylesheet" href="./assets/display-style.css" />
   </head>
   <body>
-    <div class="flex-row align-center justify-center min-100-vh">
+    <header>
+        <h1>
+            Weather Dash
+        </h1>
+    </header>
+    <div class="flex-row align-center justify-center col-12 col-md-3">
       <form class="flex-column align-center" id="search-form">
-        <h1>Weather Dashboard</h1>
         <label for="search"> Search for a City: </label>
         <input
           type="text"
@@ -36,6 +54,25 @@
         </button>
       </form>
     </div>
+    <div class="container">
+        <h1 id="city-name"></h1>
+        <ul id="info-container">
+          <li id="temp"></li>
+          <li id="wind"></li>
+          <li id="humi"></li>
+        </ul>
+      </div>
+      <div class="5day">
+        <ul id="5day-container">
+          <li id="first">
+            <p id="day-one"></p>
+            <i></i>
+            <p id="tem-1"></p>
+            <p id="wind-1"></p>
+            <p id="humi-1"></p>
+          </li>
+        </ul>
+      </div>
 
     <!--Jquery library-->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -45,6 +82,6 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
-    <script src="./assets/script.js"></script>
+    <script src="./assets/display-search.js"></script>
   </body>
 </html>
