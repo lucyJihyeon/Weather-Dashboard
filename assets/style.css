@@ -1,0 +1,67 @@
+:root   {
+    --background-color : rgb(103, 147, 201);
+    --bgcolor-button : rgb(176, 98, 250);
+    --bgcolor-bottom : rgb(255, 164, 118);
+}
+
+*   {
+    font-family: 'Sometype Mono', monospace;
+}
+
+
+
+body {
+    color: white;
+    text-align: center;
+    background-image: linear-gradient(
+        var(--background-color) 0%,
+        var( --bgcolor-bottom) 100%
+    );
+    padding: 15px;
+
+}
+
+
+form {
+    margin: 15px 20px;
+    display: flex;
+    border: 5px solid white;
+    border-radius: 20px;
+    padding: 20px;
+    width: 75vh;
+}
+form h1 {
+    text-shadow: 2px 2px 2px black;
+    text-decoration: underline;
+    text-underline-offset: 10px;
+}
+
+
+#search {
+    height: 40px;
+    font-size: larger;
+    border-radius: 10px;
+    border: 1px solid white;
+}
+label {
+    margin-top: 20px;
+    font-size: 30px;
+}
+#searchbtn  {
+    border-radius: 10px;
+}
+
+.align-center   {
+    align-items: center;
+}
+.flex-row   {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.justify-center {
+    justify-content: center;
+}
+.min-100-vh {
+    min-height: 100vh;
+}
