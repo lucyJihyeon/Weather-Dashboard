@@ -40,28 +40,30 @@
             Weather Dash
         </h1>
     </header>
-    <div class="flex-row align-center justify-center col-12 col-md-3">
-      <form class="flex-column align-center" id="search-form">
-        <label for="search"> Search for a City: </label>
-        <input
-          type="text"
-          class="my-2 w-100"
-          id="search"
-          placeholder="San Jose"
-        />
-        <button id="searchbtn" class="btn btn-primary my-2 w-100">
-          Search
-        </button>
-      </form>
-    </div>
-    <div class="container">
-        <h1 id="city-name"></h1>
-        <ul id="info-container">
-          <li id="temp"></li>
-          <li id="wind"></li>
-          <li id="humi"></li>
-        </ul>
-      </div>
+        <div class="first-container">
+            <div class="flex-row align-center justify-center col-sm-12 col-lg-6">
+            <form class="flex-column align-center" id="search-form">
+                <label for="search"> Search for a City: </label>
+                <input
+                type="text"
+                class="my-2 w-100"
+                id="search"
+                placeholder="San Jose"
+                />
+                <button id="searchbtn" class="btn btn-primary my-2 w-100">
+                Search
+                </button>
+            </form>
+            </div>
+            <div id="result-container" class="col-lg-6 col-sm-12">
+                <h1 id="city-name"></h1>
+                <ul id="info-container">
+                <li id="temp"></li>
+                <li id="wind"></li>
+                <li id="humi"></li>
+                </ul>
+            </div>
+        </div>    
       <div class="5day">
         <ul id="5day-container">
           <li id="first">
