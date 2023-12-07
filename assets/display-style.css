@@ -23,8 +23,29 @@ header h1 {
     text-shadow: 2px 2px 2px black;
     padding: 15px;
 }
+.first-container    {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
 
+@media screen and (min-width: 768px)    {
+    #search-form    {
+        width: 700px;
+    }
+}
 
+@media screen and (min-width: 1024px)    {
+    #search-form    {
+        width: 500px;
+    }
+}
+
+#result-container{
+    display: flex;
+    justify-content: center;
+    
+}
 form {
     display: flex;
     border: 5px solid white;
@@ -70,3 +91,4 @@ label {
 ul  {
     list-style: none;
 }
+
