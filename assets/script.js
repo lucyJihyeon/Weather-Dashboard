@@ -1,11 +1,10 @@
-//var apikeyOW = "bd198fc2c921dcda5323e5669a78656f";
+var apikeyOW = "bd198fc2c921dcda5323e5669a78656f";
 var searchFormEl = $("#search-form");
 
 function submitHandler(event)   {
     event.preventDefault();
 
     var searchInput = $("#search").val();
-    console.log(searchInput);
     if (!searchInput)   {
         var enterAgain = $("#enter-again")
         for (var i = 0; i < enterAgain.length; i ++)    {
@@ -18,7 +17,7 @@ function submitHandler(event)   {
         searchFormEl.append(please);
         return;
     }
-    var queryString = "./search-results.html"
+    var queryString = "./search-results.html?q=" + searchInput + "&appid=" + apikeyOW;
     location.assign(queryString);
 
 }
