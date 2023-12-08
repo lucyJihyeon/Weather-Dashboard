@@ -22,8 +22,7 @@ function submitHandler(event)   {
 
 }
 
-searchFormEl.on("click", submitHandler);
-
+searchFormEl.on("click", "#searchbtn", submitHandler);
 
 
 
