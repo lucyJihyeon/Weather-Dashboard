@@ -108,3 +108,14 @@ ul  {
     flex-direction: row;
    align-items: center;
 }
+
+#history {
+    display: flex;
+    flex-direction: column;
+    margin: 30px;
+}
+
+#history button {
+    margin: 10px;
+    border-radius: 10px;
+}
