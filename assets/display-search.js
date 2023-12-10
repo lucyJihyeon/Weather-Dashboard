@@ -116,6 +116,7 @@ function fiveDays(lat, lon) {
     .then(function (data)   {
         if (data)   {
             console.log(data);
+            $("#fiveday-container").empty();
             var dtUnix = data.list[2].dt;
             var dtTxt = dayjs(dtUnix * 1000).format("M[/]D[/]YYYY");
             var temp = data.list[2].main.temp + " °F";
