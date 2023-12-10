@@ -1,9 +1,9 @@
 :root   {
     --background-color : rgb(103, 147, 201);
-    --bgcolor-button : rgb(176, 98, 250);
     --bgcolor-bottom : rgb(255, 164, 118);
     --body-bg: rgba(114, 152, 150, 0.194);
     --cloud-color: rgb(65, 175, 243);
+    --five-bg-color: rgba(199, 164, 232, 0.779);
 }
 
 *   {
@@ -41,6 +41,7 @@ header h1 {
         width: 300px;
         margin-left: 0;
     }
+   
 }
 
 
@@ -122,3 +123,17 @@ ul  {
     border-radius: 10px;
 }
 
+.second-container   {
+    display: flex;
+    flex-direction: row;
+
+}
+#fiveday-container  {
+    background-color:var(--five-bg-color);
+    width: fit-content;
+    border-radius: 10px;
+    padding: 20px;
+}
+#fiveday-container li {
+    padding: 10px;
+}
