@@ -6,12 +6,14 @@ var cityhumi = $("#humi");
 var currentDate = dayjs().format("[(]M[/]D[/]YYYY[)]");
 var iconEl = $("#icon");
 var historyEl = $("#history");
+var historyBtn = $("#history-btn");
+var apiid = "bd198fc2c921dcda5323e5669a78656f";
 
 function getParams() {
   var searchParamsArr = document.location.search.split("&");
   var query = searchParamsArr[0].split("=").pop();
   var apiid = searchParamsArr[1].split("=").pop();
-
+  console.log(apiid);
   searchApi(query, apiid);
 }
 
@@ -42,54 +44,43 @@ function searchApi(city, apiid) {
         var weatherDsc = data.weather[0].description;
         console.log(weatherDsc);
         iconGenerate(weatherDsc);
-        
+
         var newWeather = {
-            name: cityName,
-            temp: cityTemp,
-            wind: cityWind,
-            humi: cityHumi,
-            desc: weatherDsc,
-        }
+          name: cityName,
+          temp: cityTemp,
+          wind: cityWind,
+          humi: cityHumi,
+          desc: weatherDsc,
+        };
         cityname.text(cityName + " " + currentDate);
         citytemp.text("Temperature: " + cityTemp + " °F");
         citywind.text("Wind: " + cityWind + " mph");
         cityhumi.text("Humidity: " + cityHumi + " %");
 
-        
-        var weatherinfo = JSON.parse(localStorage.getItem('weatherInfos')) || [];
+        var weatherinfo =
+          JSON.parse(localStorage.getItem("weatherInfos")) || [];
         var isNewWeather = true;
 
-        for (var i = 0; i < weatherinfo.length; i++)    {
-            var weatherName = weatherinfo[i].name;
-            console.log(weatherName);
-            if(newWeather.name === weatherName) {
-                isNewWeather = false;
-                break;
-            }
+        for (var i = 0; i < weatherinfo.length; i++) {
+          var weatherName = weatherinfo[i].name;
+          console.log(weatherName);
+          if (newWeather.name === weatherName) {
+            isNewWeather = false;
+            break;
+          }
         }
         displayHistory();
 
-        if (isNewWeather)   {
-            weatherinfo.push(newWeather);        
-            savetoLocalStorage(weatherinfo);
-            displayHistory();
+        if (isNewWeather) {
+          weatherinfo.push(newWeather);
+          savetoLocalStorage(weatherinfo);
+          displayHistory();
         }
-
-        console.log(newWeather.name);
-
-        console.log(weatherName);
-        console.log((newWeather.name === weatherName))
-        console.log(isNewWeather);
-        
-        /*
-        weatherinfo.push(newWeather);        
-        savetoLocalStorage(weatherinfo);
-        displayHistory();
-        */
-    }
+      }
     });
 }
 function iconGenerate(description) {
+  iconEl.removeAttr("class");  
   if (description.includes("rain")) {
     iconEl.addClass("fas fa-solid fa-cloud-rain mx-2").css({
       color: "var(--cloud-color)",
@@ -131,21 +122,43 @@ function iconGenerate(description) {
   }
 }
 
+function savetoLocalStorage(weatherObject) {
+  localStorage.setItem("weatherInfos", JSON.stringify(weatherObject));
+}
+function displayHistory() {
+  var weatherinfo = JSON.parse(localStorage.getItem("weatherInfos")) || [];
+  console.log(weatherinfo);
+  historyEl.empty();
+  for (var i = 0; i < weatherinfo.length; i++) {
+    var weatherhistory = weatherinfo[i];
+    var wHistorycity = $("<button>")
+      .text(weatherhistory.name)
+      .addClass("btn btn-secondary")
+      .attr({
+        id: "history-btn",
+        "data-index": i,
+      });
+    historyEl.append(wHistorycity);
+  }
+}
 
 
-function savetoLocalStorage(weatherObject)   {
-    localStorage.setItem('weatherInfos', JSON.stringify(weatherObject));
+
+function getParamsHistory(weather) {
+  var city = weather.name;
+  searchApi(city, apiid);
 }
-function displayHistory()   {
-    var weatherinfo = JSON.parse(localStorage.getItem('weatherInfos')) || [];
-    console.log(weatherinfo);
-    historyEl.empty();
-    for (var i = 0; i < weatherinfo.length; i++)    {
-        var weatherhistory = weatherinfo[i];
-        var wHistorycity = $("<button>").text(weatherhistory.name).addClass("btn btn-secondary").attr("id", "history-btn");
-        historyEl.append(wHistorycity);
-    }
-    
+
+function historyHandler(event) {
+  event.preventDefault();
+  var dataIndex = $(this).data("index");
+  console.log(dataIndex);
+  var weatherinfo = JSON.parse(localStorage.getItem("weatherInfos")) || [];
+  var targetWeather = weatherinfo[dataIndex];
+  console.log(targetWeather);
+  getParamsHistory(targetWeather);
 }
+
+historyEl.on("click", "#history-btn", historyHandler);
 
 getParams();
