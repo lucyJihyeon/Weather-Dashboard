@@ -8,6 +8,8 @@ var iconEl = $("#icon");
 var historyEl = $("#history");
 var historyBtn = $("#history-btn");
 var apiid = "bd198fc2c921dcda5323e5669a78656f";
+var searchFormEl = $("#search-form");
+var container = $(".first-container");
 
 function getParams() {
   var searchParamsArr = document.location.search.split("&");
@@ -27,15 +29,24 @@ function searchApi(city, apiid) {
 
   fetch(owUrl)
     .then(function (response) {
-      if (!response.ok) {
-        resultTextEl.text("Please enter a valid city");
+      if (!(response.ok)) {
+        $("#enter-again").remove();
+        var please = $("<p>")
+          .text("Please enter a valid city name!")
+          .css({
+            color: "white",
+            "text-align": "center",
+          })
+          .attr("id", "enter-again");
+        searchFormEl.append(please);
         throw response.json();
       }
-
       return response.json();
     })
+
     .then(function (data) {
       if (data) {
+        $("#enter-again").remove(); 
         console.log(data);
         var cityTemp = data.main.temp;
         var cityName = data.name;
@@ -80,7 +91,7 @@ function searchApi(city, apiid) {
     });
 }
 function iconGenerate(description) {
-  iconEl.removeAttr("class");  
+  iconEl.removeAttr("class");
   if (description.includes("rain")) {
     iconEl.addClass("fas fa-solid fa-cloud-rain mx-2").css({
       color: "var(--cloud-color)",
@@ -142,8 +153,6 @@ function displayHistory() {
   }
 }
 
-
-
 function getParamsHistory(weather) {
   var city = weather.name;
   searchApi(city, apiid);
@@ -159,6 +168,26 @@ function historyHandler(event) {
   getParamsHistory(targetWeather);
 }
 
+function submitHandler(event) {
+  event.preventDefault();
+
+  var searchInput = $("#search").val();
+  if (!searchInput) {
+    $("#enter-again").remove(); 
+    var please = $("<p>")
+      .text("Please enter a city!")
+      .css({
+        color: "white",
+        "text-align": "center",
+      })
+      .attr("id", "enter-again");
+    searchFormEl.append(please);
+    return;
+  }
+  searchApi(searchInput, apiid);
+}
+
 historyEl.on("click", "#history-btn", historyHandler);
+searchFormEl.on("click", "#searchbtn", submitHandler);
 
 getParams();
