@@ -14,7 +14,6 @@ function getParams() {
   var searchParamsArr = document.location.search.split("&");
   var query = searchParamsArr[0].split("=").pop();
   var apiid = searchParamsArr[1].split("=").pop();
-  console.log(apiid);
   searchApi(query, apiid);
 }
 
@@ -46,7 +45,6 @@ function searchApi(city, apiid) {
     .then(function (data) {
       if (data) {
         $("#enter-again").remove();
-        console.log(data);
         var cityTemp = data.main.temp;
         var cityName = data.name;
         var cityWind = data.wind.speed;
@@ -54,9 +52,7 @@ function searchApi(city, apiid) {
         var weatherDsc = data.weather[0].description;
         var coorLat = data.coord.lat;
         var coorLon = data.coord.lon;
-        console.log(coorLat);
-        console.log(coorLon);
-        console.log(weatherDsc);
+        
         iconGenerate(weatherDsc);
 
         var newWeather = {
@@ -79,7 +75,6 @@ function searchApi(city, apiid) {
 
         for (var i = 0; i < weatherinfo.length; i++) {
           var weatherName = weatherinfo[i].name;
-          console.log(weatherName);
           if (newWeather.name === weatherName) {
             isNewWeather = false;
             break;
@@ -115,7 +110,7 @@ function fiveDays(lat, lon) {
     })
     .then(function (data) {
       if (data) {
-        console.log(data);
+        var descriptions = [];
         $(".third-container").empty();
         for (var i = 1; i < 34; i += 8) {
           var fivedayContainer = $("<ul>");
@@ -124,14 +119,24 @@ function fiveDays(lat, lon) {
           var temp = data.list[i].main.temp + " °F";
           var humi = data.list[i].main.humidity + " %";
           var wind = data.list[i].wind.speed + " mph";
-
+          var weatherDsc = data.list[i].weather[0].description
+          descriptions.push(weatherDsc);
+          console.log(weatherDsc);
+          var icon = $("<i>").addClass("five-icon").attr("data-index", i);
           var forecastItem = $("<li>").text(dtTxt);
           var tempItem = $("<li>").text("Temp " + temp);
           var humiItem = $("<li>").text("Humidity: " + humi);
           var windItem = $("<li>").text("Wind: " + wind);
 
-          fivedayContainer.append(forecastItem, tempItem, windItem, humiItem);
+          fivedayContainer.append(
+            forecastItem,
+            icon,
+            tempItem,
+            windItem,
+            humiItem
+          );
           $(".third-container").append(fivedayContainer);
+          iconGenerate2(descriptions);
         }
       }
     });
@@ -180,12 +185,62 @@ function iconGenerate(description) {
   }
 }
 
+function iconGenerate2(descriptionArr) {
+  var icon = $(".five-icon");
+  for (var i = 0; i < icon.length; i++) {
+    var fiveIcon = $(icon[i]);
+    var description = descriptionArr[i];
+    fiveIcon.removeAttr("class");
+
+    if (description.includes("rain")) {
+      fiveIcon.addClass("five-icon fas fa-solid fa-cloud-rain mx-2").css({
+        color: "var(--cloud-color)",
+      });
+    } else if (description.includes("clouds")) {
+      fiveIcon.addClass("five-icon fas fa-solid fa-cloud mx-2").css({
+        color: "grey",
+      });
+    } else if (
+      description.includes("mist") ||
+      description.includes("smoke") ||
+      description.includes("haze") ||
+      description.includes("dust") ||
+      description.includes("sand") ||
+      description.includes("fog") ||
+      description.includes("ash") ||
+      description.includes("squalls") ||
+      description.includes("tornado")
+    ) {
+      fiveIcon.addClass("five-icon fas fa-solid fa-water mx-2").css({
+        color: "grey",
+      });
+    } else if (description.includes("clear")) {
+      fiveIcon.addClass("five-icon fas fa-solid fa-star mx-2").css({
+        color: "yellow",
+      });
+    } else if (description.includes("snow") || description.includes("sleet")) {
+      fiveIcon.addClass("five-icon fas fa-solid fa-snowflake mx-2").css({
+        color: "var(--cloud-color)",
+      });
+    } else if (description.includes("thunderstorm")) {
+      fiveIcon.addClass("five-icon fas fa-solid fa-cloud-bolt mx-2").css({
+        color: "#53565a",
+      });
+    } else if (description.includes("drizzle")) {
+      fiveIcon.addClass("five-icon fas fa-solid fa-cloud-rain mx-2").css({
+        color: "var(--cloud-color)",
+      });
+    }
+
+  }
+
+}
+
 function savetoLocalStorage(weatherObject) {
   localStorage.setItem("weatherInfos", JSON.stringify(weatherObject));
 }
 function displayHistory() {
   var weatherinfo = JSON.parse(localStorage.getItem("weatherInfos")) || [];
-  console.log(weatherinfo);
   historyEl.empty();
   for (var i = 0; i < weatherinfo.length; i++) {
     var weatherhistory = weatherinfo[i];
@@ -209,10 +264,8 @@ function historyHandler(event) {
   event.preventDefault();
   $("#fiveday-container").empty();
   var dataIndex = $(this).data("index");
-  console.log(dataIndex);
   var weatherinfo = JSON.parse(localStorage.getItem("weatherInfos")) || [];
   var targetWeather = weatherinfo[dataIndex];
-  console.log(targetWeather);
   getParamsHistory(targetWeather);
   fiveDays(targetWeather.lat, targetWeather.lon);
 }
