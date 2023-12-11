@@ -93,60 +93,48 @@ function searchApi(city, apiid) {
           displayHistory();
         }
       }
-      fiveDays(coorLat,coorLon);
+      fiveDays(coorLat, coorLon);
     });
 }
 function fiveDays(lat, lon) {
-    
   var owUrl =
     "https://api.openweathermap.org/data/2.5/forecast?lat=" +
     lat +
     "&lon=" +
     lon +
     "&appid=" +
-    apiid + "&units=imperial";
-    
-    fetch(owUrl)
+    apiid +
+    "&units=imperial";
+
+  fetch(owUrl)
     .then(function (response) {
       if (!response.ok) {
         throw response.json();
       }
       return response.json();
     })
-    .then(function (data)   {
-        if (data)   {
-            console.log(data);
-            $("#fiveday-container").empty();
-            var dtUnix = data.list[2].dt;
-            var dtTxt = dayjs(dtUnix * 1000).format("M[/]D[/]YYYY");
-            var temp = data.list[2].main.temp + " °F";
-            var humi = data.list[2].main.humidity + " %";
-            var wind = data.list[2].wind.speed + " mph";
-  
-            var forecastItem = $("<li>").text(dtTxt);
-            var tempItem = $("<li>").text("Temp " + temp);
-            var humiItem = $("<li>").text("Humidity: " + humi);
-            var windItem = $("<li>").text("Wind: " + wind);
-  
-            $("#fiveday-container").append(forecastItem, tempItem,windItem, humiItem );
+    .then(function (data) {
+      if (data) {
+        console.log(data);
+        $(".third-container").empty();
+        for (var i = 1; i < 34; i += 8) {
+          var fivedayContainer = $("<ul>");
+          var dtUnix = data.list[i].dt;
+          var dtTxt = dayjs(dtUnix * 1000).format("M[/]D[/]YYYY");
+          var temp = data.list[i].main.temp + " °F";
+          var humi = data.list[i].main.humidity + " %";
+          var wind = data.list[i].wind.speed + " mph";
+
+          var forecastItem = $("<li>").text(dtTxt);
+          var tempItem = $("<li>").text("Temp " + temp);
+          var humiItem = $("<li>").text("Humidity: " + humi);
+          var windItem = $("<li>").text("Wind: " + wind);
+
+          fivedayContainer.append(forecastItem, tempItem, windItem, humiItem);
+          $(".third-container").append(fivedayContainer);
         }
-    })
-
-
-
-
-
-
-/*
-  var latlon = JSON.parse(localStorage.getItem("weatherInfos")) || [];
-  for (var i = 0; i < latlon.length; i++)   {
-    var latitude = latlon.lat;
-    var longitude = latlon.lon;
-    console.log(latitude);
-  }
-
-*/
-
+      }
+    });
 }
 
 function iconGenerate(description) {
