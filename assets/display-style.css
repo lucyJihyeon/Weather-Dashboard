@@ -29,19 +29,49 @@ header h1 {
     flex-wrap: wrap;
 }
 
-@media screen and (min-width: 768px)    {
+@media screen and (max-width: 768px)    {
     #search-form    {
         width: 500px;
     }
-    
+    .third-container    {
+        display: flex;
+        flex-direction: column;
+    }
+    .third-container li {
+        width: 300px;
+    }
+    .second-container   {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .fiveday    {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}
+@media screen and (min-width: 320px)    {
+    .second-container   {
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 @media screen and (min-width: 1024px)    {
-    #search-form    {
-        width: 300px;
-        margin-left: 0;
+    .third-container    {
+        display: flex;
+        flex-direction: row;
     }
-   
+    .third-container li {
+        width: 110px;
+        margin-top: 10px;
+    }
+    .second-container   {
+        display: flex;
+        flex-direction: row;
+    }
 }
 
 
@@ -123,17 +153,15 @@ ul  {
     border-radius: 10px;
 }
 
-.second-container   {
-    display: flex;
-    flex-direction: row;
 
-}
-#fiveday-container  {
+.third-container ul {
     background-color:var(--five-bg-color);
     width: fit-content;
     border-radius: 10px;
-    padding: 20px;
+    padding: 10px;
+    margin-left: 10px;
 }
 #fiveday-container li {
     padding: 10px;
 }
+
