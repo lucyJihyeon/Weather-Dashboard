@@ -10,6 +10,7 @@ var historyBtn = $("#history-btn");
 var apiid = "bd198fc2c921dcda5323e5669a78656f";
 var searchFormEl = $("#search-form");
 
+//Function to get a parameters from the URL and initiate a search
 function getParams() {
   var searchParamsArr = document.location.search.split("&");
   var query = searchParamsArr[0].split("=").pop();
@@ -17,6 +18,7 @@ function getParams() {
   searchApi(query, apiid);
 }
 
+//Function to handler the main weather search
 function searchApi(city, apiid) {
   var owUrl =
     "https://api.openweathermap.org/data/2.5/weather?q=" +
@@ -24,12 +26,14 @@ function searchApi(city, apiid) {
     "&appid=" +
     apiid +
     "&units=imperial";
-
+  //Fetch the weather data
   fetch(owUrl)
     .then(function (response) {
       if (!response.ok) {
+        //check for a valid response
         $("#enter-again").remove();
         var please = $("<p>")
+          //if not valid, prompt the user to re-enter
           .text("Please enter a valid city name!")
           .css({
             color: "white",
@@ -41,10 +45,11 @@ function searchApi(city, apiid) {
       }
       return response.json();
     })
-
+    //if valid response, get the data 
     .then(function (data) {
       if (data) {
         $("#enter-again").remove();
+        //extract weather data from the data
         var cityTemp = data.main.temp;
         var cityName = data.name;
         var cityWind = data.wind.speed;
@@ -52,9 +57,10 @@ function searchApi(city, apiid) {
         var weatherDsc = data.weather[0].description;
         var coorLat = data.coord.lat;
         var coorLon = data.coord.lon;
-        
+        //generate and display weather icon according to the weather description
         iconGenerate(weatherDsc);
 
+        //create a weather object
         var newWeather = {
           name: cityName,
           temp: cityTemp,
@@ -64,15 +70,18 @@ function searchApi(city, apiid) {
           lat: coorLat,
           lon: coorLon,
         };
+        //display current weather information 
         cityname.text(cityName + " " + currentDate);
         citytemp.text("Temperature: " + cityTemp + " °F");
         citywind.text("Wind: " + cityWind + " mph");
         cityhumi.text("Humidity: " + cityHumi + " %");
 
+        //Get weather history from the local storage
         var weatherinfo =
           JSON.parse(localStorage.getItem("weatherInfos")) || [];
+        
+        //Check if the current weather is alreay in the local storage
         var isNewWeather = true;
-
         for (var i = 0; i < weatherinfo.length; i++) {
           var weatherName = weatherinfo[i].name;
           if (newWeather.name === weatherName) {
@@ -80,6 +89,7 @@ function searchApi(city, apiid) {
             break;
           }
         }
+        //display and save weather history
         displayHistory();
 
         if (isNewWeather) {
@@ -88,10 +98,13 @@ function searchApi(city, apiid) {
           displayHistory();
         }
       }
+      //function to display five-day forecast
       fiveDays(coorLat, coorLon);
     });
 }
+//function to display five-day forecast 
 function fiveDays(lat, lon) {
+  //build the openweathermap api url for five-day forecast
   var owUrl =
     "https://api.openweathermap.org/data/2.5/forecast?lat=" +
     lat +
@@ -101,17 +114,25 @@ function fiveDays(lat, lon) {
     apiid +
     "&units=imperial";
 
+  //fetch the url 
   fetch(owUrl)
+    //check if the response if valid
     .then(function (response) {
       if (!response.ok) {
         throw response.json();
       }
       return response.json();
     })
+    //if valid, retrieve the data
     .then(function (data) {
       if (data) {
+        //create an empty description array to store five different weather descriptions
         var descriptions = [];
+        //clear the previous forecast items 
         $(".third-container").empty();
+        //starting from 1 (indicating current date's data at 15:00), loop through the forecast data 
+        //and create forecast items
+        //data updates every 3 hours, so add i by 8 to get the data from the next day at 15:00.
         for (var i = 1; i < 34; i += 8) {
           var fivedayContainer = $("<ul>");
           var dtUnix = data.list[i].dt;
@@ -120,9 +141,10 @@ function fiveDays(lat, lon) {
           var humi = data.list[i].main.humidity + " %";
           var wind = data.list[i].wind.speed + " mph";
           var weatherDsc = data.list[i].weather[0].description
+          //store the weather description to the description array 
           descriptions.push(weatherDsc);
-          console.log(weatherDsc);
-          var icon = $("<i>").addClass("five-icon").attr("data-index", i);
+          //adding a class 
+          var icon = $("<i>").addClass("five-icon");
           var forecastItem = $("<li>").text(dtTxt);
           var tempItem = $("<li>").text("Temp " + temp);
           var humiItem = $("<li>").text("Humidity: " + humi);

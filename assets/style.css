@@ -1,18 +1,23 @@
+/*
+customize color
+*/
 :root   {
     --background-color : rgb(103, 147, 201);
     --bgcolor-button : rgb(176, 98, 250);
     --bgcolor-bottom : rgb(255, 164, 118);
 }
 
+/*Universal Selector to set a general font style*/
 *   {
     font-family: 'Sometype Mono', monospace;
 }
 
 
-
+/*Element Selector to set a style for the background*/
 body {
     color: white;
     text-align: center;
+    /*Adding linear gradient*/
     background-image: linear-gradient(
         var(--background-color) 0%,
         var( --bgcolor-bottom) 100%
@@ -20,7 +25,7 @@ body {
     padding: 15px;
 }
 
-
+/*Element Selector to set style for the form element*/
 form {
     margin: 15px 20px;
     display: flex;
@@ -29,27 +34,31 @@ form {
     padding: 20px;
     width: 75vh;
 }
+/*Element Selector to set style for the h1 element in form element*/
 form h1 {
     text-shadow: 2px 2px 2px black;
     text-decoration: underline;
     text-underline-offset: 10px;
 }
 
-
+/*ID Selector for the search id*/
 #search {
     height: 40px;
     font-size: larger;
     border-radius: 10px;
     border: 1px solid white;
 }
+/*Element Selector for label element*/
 label {
     margin-top: 20px;
     font-size: 30px;
 }
+/*ID Selector for the searchbtn id*/
 #searchbtn  {
     border-radius: 10px;
 }
 
+/*Class Selectors to set style*/
 .align-center   {
     align-items: center;
 }
