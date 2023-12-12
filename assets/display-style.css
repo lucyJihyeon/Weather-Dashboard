@@ -78,10 +78,11 @@ header h1 {
     .third-container    {
         display: flex;
         flex-direction: row;
+        width: 100%
     }
     .third-container li {
        display: flex;
-       
+       margin-bottom: 10px;
     }
     .second-container   {
         display: flex;
@@ -164,7 +165,7 @@ ul  {
     border-radius: 10px;
     padding: 10px;
     margin-left: 10px;
-   
+    width: 100%;
 }
 /*Element Selector for the li elements inside of the fiveday-container id*/
 #fiveday-container li {
