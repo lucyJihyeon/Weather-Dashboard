@@ -40,9 +40,11 @@
             Weather Dash
         </h1>
     </header>
+        <!--Add a first container containing the search form and result display -->
         <div class="first-container">
-            <div class="flex-row align-center justify-center col-sm-12 col-lg-3">
-            <form class="flex-column align-center" id="search-form">
+            <!-- Search form container -->
+            <div class="col-sm-10 col-lg-3 form-container">
+            <form id="search-form">
                 <label for="search"> Search for a City: </label>
                 <input
                 type="text"
@@ -55,11 +57,13 @@
                 </button>
             </form>
             </div>
+             <!-- Result container -->
             <div id="result-container" class="col-lg-8 col-sm-12">
                 <div class="title">
                     <h1 id="city-name"></h1>
                     <i id="icon"></i>
                 </div>    
+                <!-- Information container with temperature, wind, and humidity -->
                 <ul id="info-container">
                 <li id="temp"></li>
                 <li id="wind"></li>
@@ -69,12 +73,13 @@
         </div>   
       
 
-      </div>  
+      </div> 
+      <!--Add a container for the history buttons and 5 day forecast--> 
       <div class="second-container col-12"> 
         <div id="history" class="col-8 col-lg-3"></div>
-            <div class="fiveday col-sm-12 col-lg-6 my-4">
+            <div class="fiveday col-sm-12 col-lg-8 my-4">
                 <h1> 5-Day Forecast</h1>
-                <div class="third-container">
+                <div class="third-container col-12 col-lg-8">
   
                 </div>    
             </div>
