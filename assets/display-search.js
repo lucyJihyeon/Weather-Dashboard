@@ -143,8 +143,9 @@ function fiveDays(lat, lon) {
           var weatherDsc = data.list[i].weather[0].description
           //store the weather description to the description array 
           descriptions.push(weatherDsc);
-          //adding a class 
+          //adding a class "five-icon" for the icongenerate2 function 
           var icon = $("<i>").addClass("five-icon");
+          //display the weather information for each day
           var forecastItem = $("<li>").text(dtTxt);
           var tempItem = $("<li>").text("Temp " + temp);
           var humiItem = $("<li>").text("Humidity: " + humi);
@@ -158,14 +159,17 @@ function fiveDays(lat, lon) {
             humiItem
           );
           $(".third-container").append(fivedayContainer);
+          //generate and display weather icons for the forecast items. 
           iconGenerate2(descriptions);
         }
       }
     });
 }
-
+//function to generate and set weather icon based on the current weather description
 function iconGenerate(description) {
+  //remove the previoius data
   iconEl.removeAttr("class");
+  //creating a weather icon by adding a class from font awesome to the <i> element based on the weather description  
   if (description.includes("rain")) {
     iconEl.addClass("fas fa-solid fa-cloud-rain mx-2").css({
       color: "var(--cloud-color)",
@@ -207,13 +211,17 @@ function iconGenerate(description) {
   }
 }
 
+//function to generate and set weather icon based on the description of the forecast items.
 function iconGenerate2(descriptionArr) {
   var icon = $(".five-icon");
+  //loop through the forecast items and retreive the weather description
   for (var i = 0; i < icon.length; i++) {
     var fiveIcon = $(icon[i]);
     var description = descriptionArr[i];
+    //remove the previous classes
     fiveIcon.removeAttr("class");
 
+    //creating a weather icon by adding a class from font awesome to the <i> element based on the weather description 
     if (description.includes("rain")) {
       fiveIcon.addClass("five-icon fas fa-solid fa-cloud-rain mx-2").css({
         color: "var(--cloud-color)",
@@ -258,17 +266,23 @@ function iconGenerate2(descriptionArr) {
 
 }
 
+//function to save the weather object into the local storage
 function savetoLocalStorage(weatherObject) {
   localStorage.setItem("weatherInfos", JSON.stringify(weatherObject));
 }
+//function to display history buttons
 function displayHistory() {
   var weatherinfo = JSON.parse(localStorage.getItem("weatherInfos")) || [];
+  //make sure the empty the history element to prevent duplicated items.
   historyEl.empty();
+  //loop through the weatherinfo objects and display items 
   for (var i = 0; i < weatherinfo.length; i++) {
     var weatherhistory = weatherinfo[i];
     var wHistorycity = $("<button>")
       .text(weatherhistory.name)
       .addClass("btn btn-secondary")
+      //add data-index to indicate the index number 
+      //so that we can retrieve the cooresponsing data 
       .attr({
         id: "history-btn",
         "data-index": i,
@@ -276,22 +290,28 @@ function displayHistory() {
     historyEl.append(wHistorycity);
   }
 }
-
+//function to retreive the city name and search from the url 
 function getParamsHistory(weather) {
   var city = weather.name;
   searchApi(city, apiid);
 }
-
+//function to retrieve the corresponding data from the history button
 function historyHandler(event) {
   event.preventDefault();
+  //make sure to empty out the fiveday-conrainer to prevent duplicated items.
   $("#fiveday-container").empty();
+  //retrieve the index number of the history button element
   var dataIndex = $(this).data("index");
+  //get weatherInfos item from the local storage.
   var weatherinfo = JSON.parse(localStorage.getItem("weatherInfos")) || [];
+  //take the data stored at the certain index number and store it in a variable.
   var targetWeather = weatherinfo[dataIndex];
   getParamsHistory(targetWeather);
+  //call fiveDays function to display the forecast items of the city 
   fiveDays(targetWeather.lat, targetWeather.lon);
 }
 
+//function to retrieve the value entered in the search input field
 function submitHandler(event) {
   event.preventDefault();
 
@@ -311,7 +331,10 @@ function submitHandler(event) {
   searchApi(searchInput, apiid);
 }
 
+//add eventlistener to the history button 
 historyEl.on("click", "#history-btn", historyHandler);
+//add event listener to the search button inside of the search from element
 searchFormEl.on("click", "#searchbtn", submitHandler);
 
+//call getParams function to start. 
 getParams();
